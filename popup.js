@@ -13,9 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	    item.addEventListener('click', function() {
 		    setActiveColor(this);
 		    const selectedColor = this.getAttribute('data-entity');
-		    chrome.storage.local.set({ selectedColor: selectedColor }, function() {
-		        console.log('Selected color saved:', selectedColor);
-		    });
+		    chrome.storage.local.set({ selectedColor: selectedColor });
+		    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+	            chrome.tabs.sendMessage(tabs[0].id, { action: "changeKoshochkaColor", color: selectedColor });
+	        });
 	    });
 	});
 

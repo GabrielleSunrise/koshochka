@@ -1,6 +1,8 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
      if (request.action === "releaseKoshochka") {
          releaseTheKoshochka(request.color);
+     } else if (request.action === "changeKoshochkaColor") {
+         changeKoshochkaColor(request.color);
      }
 });
 
@@ -9,6 +11,12 @@ chrome.storage.local.get(['showKoshochka', 'koshochkaColor'], function(result) {
          const colorToUse = result.koshochkaColor || 'color-0-0';
          releaseTheKoshochka(colorToUse);
      }
+});
+
+chrome.storage.local.get(['selectedColor'], function(result) {
+    if (result.selectedColor) {
+        changeKoshochkaColor(result.selectedColor);
+    }
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -23,6 +31,18 @@ chrome.storage.local.get(['showKoshochka'], function(result) {
      }
 });
 
+function changeKoshochkaColor(color) {
+     let koshochkaElements = document.querySelectorAll('.koshochka-widget-wrapper');
+     if (koshochkaElements.length > 0) {
+          const root = document.documentElement;
+          let colorArr = color.split('-');
+          let selectedColorH = colorArr[1];
+          let selectedColorS = colorArr[2] + '%';
+          root.style.setProperty('--base-koshochka-widget-color-h', selectedColorH);
+          root.style.setProperty('--base-koshochka-widget-color-s', selectedColorS);
+     }
+}
+
 function hideTheKoshochka() {
      let existingKoshochka = document.querySelectorAll('.koshochka-widget-wrapper');
      existingKoshochka.forEach(koshochka => koshochka.remove());
@@ -33,15 +53,18 @@ function releaseTheKoshochka(color) {
      let colorArr = color.split('-');
      let selectedColorH = colorArr[1];
      let selectedColorS = colorArr[2] + '%';
+     const root = document.documentElement;
+     root.style.setProperty('--base-koshochka-widget-color-h', selectedColorH);
+     root.style.setProperty('--base-koshochka-widget-color-s', selectedColorS);
 
      if (existingKoshochka.length == 0) {
           let style = document.createElement('style');
           style.innerHTML = `
                :root {
-                    --base-color-h: ` + selectedColorH + `;
-                    --base-color-s: ` + selectedColorS + `;
-                    --base-color-l-dark: 20%;
-                    --base-color-l-light: 80%;
+                    --base-koshochka-widget-color-h: 0;
+                    --base-koshochka-widget-color-s: 0%;
+                    --base-koshochka-widget-color-l-dark: 20%;
+                    --base-koshochka-widget-color-l-light: 80%;
                }
                .koshochka-widget-wrapper {
                     position: fixed;
@@ -72,6 +95,7 @@ function releaseTheKoshochka(color) {
                     bottom: 30px;
                     left: 50%;
                     transform: translateX(-50%);
+                    background: radial-gradient(ellipse at top left, hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-light)), hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark)));
                }
                .koshochka-widget-head {
                     width: 45px;
@@ -79,30 +103,31 @@ function releaseTheKoshochka(color) {
                     border-radius: 45px;
                     position: absolute;
                     bottom: 50px;
+                    background: radial-gradient(ellipse at top left, hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-light)), hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark)));
                }
                .koshochka-widget-head::before {
                     content: '';
                     transform: scaleY(2) rotate(45deg);
-                    background: linear-gradient(135deg, rgb(195, 195, 195), rgb(28, 28, 28));
+                    background: linear-gradient(135deg, hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-light)), hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark)));
                     position: absolute;
                     top: -2px;
                     width: 16px;
                     height: 16px;
                     z-index: -1;
                     border-radius: 4px;
-                    border: 1px solid rgb(90, 90, 90);
+                    border: 1px solid hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark));
                }
                .koshochka-widget-head::after {
                     content: '';
                     transform: scaleY(2) rotate(45deg);
-                    background: linear-gradient(135deg, rgb(195, 195, 195), rgb(28, 28, 28));
+                    background: linear-gradient(135deg, hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-light)), hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark)));
                     position: absolute;
                     top: -2px;
                     width: 16px;
                     height: 16px;
                     z-index: -1;
                     border-radius: 4px;
-                    border: 1px solid rgb(90, 90, 90);
+                    border: 1px solid hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark));
                }
                .koshochka-widget-animated-right .koshochka-widget-head {
                     right: 15px;
@@ -142,6 +167,7 @@ function releaseTheKoshochka(color) {
                     bottom: 60px;
                     z-index: -1;
                     transform-origin: bottom center;
+                    background: radial-gradient(ellipse at top left, hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-light)), hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark)));
                }
                .koshochka-widget-animated-right .koshochka-widget-tail {
                     left: 42px;
@@ -165,6 +191,7 @@ function releaseTheKoshochka(color) {
                     position: absolute;
                     bottom: 6px;
                     border-radius: 4px;
+                    background: linear-gradient(135deg, hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-light)), hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark)));
                     z-index: -3;
                     transform-origin: top center;
                }
@@ -176,7 +203,7 @@ function releaseTheKoshochka(color) {
                     position: absolute;
                     bottom: -6px;
                     z-index: -2;
-                    background: linear-gradient(135deg, rgb(195, 195, 195), rgb(28, 28, 28));
+                    background: linear-gradient(135deg, hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-light)), hsl(var(--base-koshochka-widget-color-h), var(--base-koshochka-widget-color-s), var(--base-koshochka-widget-color-l-dark)));
                }
                .koshochka-widget-animated-right .koshochka-widget-leg::after {
                     left: 0;
@@ -260,7 +287,7 @@ function releaseTheKoshochka(color) {
                }
 
                .koshochka-widget-mustache-back::before {
-                    margin-top: -4px;
+               margin-top: -4px;
                }
 
                .koshochka-widget-animated-right .koshochka-widget-mustache-front {
@@ -542,45 +569,18 @@ function releaseTheKoshochka(color) {
           koshochka.innerHTML = `
                <div class="koshochka-widget-container">
                     <div class="koshochka-widget-inner">
-                         <div 
-                              class="koshochka-widget-body"
-                              style="background: radial-gradient(ellipse at top left, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
-                         >
-                         </div>
-                         <div 
-                              class="koshochka-widget-head"
-                              style="background: radial-gradient(ellipse at top left, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
-                         >
+                         <div class="koshochka-widget-body"></div>
+                         <div class="koshochka-widget-head">
                               <div class="koshochka-widget-mustache-front"></div>
                               <div class="koshochka-widget-mustache-back"></div>
                               <div class="koshochka-widget-nose"></div>
                               <div class="koshochka-widget-eye"></div>
                          </div>
-                         <div 
-                              class="koshochka-widget-tail"
-                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
-                         >
-                         </div>
-                         <div 
-                              class="koshochka-widget-leg koshochka-widget-front-left"
-                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
-                         >
-                         </div>
-                         <div 
-                              class="koshochka-widget-leg koshochka-widget-front-right"
-                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
-                         >
-                         </div>
-                         <div 
-                              class="koshochka-widget-leg koshochka-widget-back-left"
-                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
-                         >
-                         </div>
-                         <div 
-                              class="koshochka-widget-leg koshochka-widget-back-right"
-                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
-                         >
-                         </div>
+                         <div class="koshochka-widget-tail"></div>
+                         <div class="koshochka-widget-leg koshochka-widget-front-left"></div>
+                         <div class="koshochka-widget-leg koshochka-widget-front-right"></div>
+                         <div class="koshochka-widget-leg koshochka-widget-back-left"></div>
+                         <div class="koshochka-widget-leg koshochka-widget-back-right"></div>
                     </div>
                </div>
           `;
