@@ -40,14 +40,31 @@ document.addEventListener('DOMContentLoaded', function() {
 	     });
 	});
 
+	function removeObjectFromAllTabs() {
+	    chrome.storage.local.get(['activeTabs'], function(result) {
+	        if (result.activeTabs) {
+	            result.activeTabs.forEach(tabId => {
+	                chrome.tabs.sendMessage(tabId, { action: "removeKoshochka" }, function(response) {
+	                    if (chrome.runtime.lastError) {
+	                        console.warn(`Could not send message to tab ${tabId}: ${chrome.runtime.lastError.message}`);
+	                        chrome.storage.local.get(['activeTabs'], function(res) {
+	                            const updatedTabs = res.activeTabs.filter(id => id !== tabId);
+	                            chrome.storage.local.set({ activeTabs: updatedTabs });
+	                        });
+	                    } else if (response && response.status === "success") {
+	                        console.log(`Message successfully sent to tab ${tabId}`);
+	                    }
+	                });
+	            });
+	        }
+	    });
+	}
+
 	let hideTheKraken = document.getElementById("hideTheKoshochka");
 
 	hideTheKraken.addEventListener('click', function() {
 		chrome.storage.local.set({ showKoshochka: false });
-
-		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-			chrome.tabs.sendMessage(tabs[0].id, { action: "hideKoshochka" });
-		});
+		removeObjectFromAllTabs();
 	});
 
 });

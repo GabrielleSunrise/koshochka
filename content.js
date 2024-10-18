@@ -1,3 +1,5 @@
+chrome.runtime.sendMessage({ action: "registerTab" });
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
      if (request.action === "releaseKoshochka") {
          releaseTheKoshochka(request.color);
@@ -8,7 +10,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 chrome.storage.local.get(['showKoshochka', 'koshochkaColor'], function(result) {
      if (result.showKoshochka) {
-         const colorToUse = result.koshochkaColor || 'color-0-0';
+         const colorToUse = result.koshochkaColor;
          releaseTheKoshochka(colorToUse);
      }
 });
@@ -20,14 +22,15 @@ chrome.storage.local.get(['selectedColor'], function(result) {
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-     if (request.action === "hideKoshochka") {
-         hideTheKoshochka();
+     if (request.action === "removeKoshochka") {
+        removeKoshochka();
+        sendResponse({ status: "success" });
      }
 });
 
 chrome.storage.local.get(['showKoshochka'], function(result) {
      if (!result.showKoshochka) {
-         hideTheKoshochka();
+        removeKoshochka();
      }
 });
 
@@ -53,9 +56,9 @@ document.addEventListener('visibilitychange', function() {
      }
 });
 
-function hideTheKoshochka() {
-     let existingKoshochka = document.querySelectorAll('.koshochka-widget-wrapper');
-     existingKoshochka.forEach(koshochka => koshochka.remove());
+function removeKoshochka() {
+    let koshochkaElements = document.querySelectorAll('.koshochka-widget-wrapper');
+    koshochkaElements.forEach(koshochka => koshochka.remove());
 }
 
 function releaseTheKoshochka(color) {
