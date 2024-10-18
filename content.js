@@ -79,7 +79,6 @@ function releaseTheKoshochka(color) {
                     border-radius: 45px;
                     position: absolute;
                     bottom: 50px;
-                    background: radial-gradient(ellipse at top left, rgb(195, 195, 195), rgb(28, 28, 28));
                }
                .koshochka-widget-head::before {
                     content: '';
@@ -143,7 +142,6 @@ function releaseTheKoshochka(color) {
                     bottom: 60px;
                     z-index: -1;
                     transform-origin: bottom center;
-                    background: radial-gradient(ellipse at top left, rgb(195, 195, 195), rgb(28, 28, 28));
                }
                .koshochka-widget-animated-right .koshochka-widget-tail {
                     left: 42px;
@@ -167,7 +165,6 @@ function releaseTheKoshochka(color) {
                     position: absolute;
                     bottom: 6px;
                     border-radius: 4px;
-                    background: linear-gradient(135deg, rgb(195, 195, 195), rgb(28, 28, 28));
                     z-index: -3;
                     transform-origin: top center;
                }
@@ -263,7 +260,7 @@ function releaseTheKoshochka(color) {
                }
 
                .koshochka-widget-mustache-back::before {
-               margin-top: -4px;
+                    margin-top: -4px;
                }
 
                .koshochka-widget-animated-right .koshochka-widget-mustache-front {
@@ -550,17 +547,40 @@ function releaseTheKoshochka(color) {
                               style="background: radial-gradient(ellipse at top left, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
                          >
                          </div>
-                         <div class="koshochka-widget-head">
+                         <div 
+                              class="koshochka-widget-head"
+                              style="background: radial-gradient(ellipse at top left, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
+                         >
                               <div class="koshochka-widget-mustache-front"></div>
                               <div class="koshochka-widget-mustache-back"></div>
                               <div class="koshochka-widget-nose"></div>
                               <div class="koshochka-widget-eye"></div>
                          </div>
-                         <div class="koshochka-widget-tail"></div>
-                         <div class="koshochka-widget-leg koshochka-widget-front-left"></div>
-                         <div class="koshochka-widget-leg koshochka-widget-front-right"></div>
-                         <div class="koshochka-widget-leg koshochka-widget-back-left"></div>
-                         <div class="koshochka-widget-leg koshochka-widget-back-right"></div>
+                         <div 
+                              class="koshochka-widget-tail"
+                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
+                         >
+                         </div>
+                         <div 
+                              class="koshochka-widget-leg koshochka-widget-front-left"
+                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
+                         >
+                         </div>
+                         <div 
+                              class="koshochka-widget-leg koshochka-widget-front-right"
+                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
+                         >
+                         </div>
+                         <div 
+                              class="koshochka-widget-leg koshochka-widget-back-left"
+                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
+                         >
+                         </div>
+                         <div 
+                              class="koshochka-widget-leg koshochka-widget-back-right"
+                              style="background: linear-gradient(135deg, hsl(` + selectedColorH + `,` + selectedColorS + `, 80%), hsl(` + selectedColorH + `,` + selectedColorS + `, 20%));"
+                         >
+                         </div>
                     </div>
                </div>
           `;
