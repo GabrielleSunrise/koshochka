@@ -82,7 +82,9 @@ function releaseTheKoshochka(color) {
                     width: 100vw;
                     overflow: hidden;
                     pointer-events: none;
-                    z-index: calc(infinity);           
+                    z-index: calc(infinity);  
+                    margin-top: auto;
+                    height: 200px;         
                }
                .koshochka-widget-container {
                     width: 100%;
