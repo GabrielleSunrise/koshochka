@@ -3,8 +3,14 @@
   "description": "Кошочка ходит внизу сайта туды-сюды",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "koshochka.html"
-  }
+  },
+  "content_scripts": [
+     {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+     }
+  ]
 }

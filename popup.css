@@ -1,0 +1,68 @@
+.buttons {
+	display: flex;
+	margin-top: 24px;
+	justify-content: space-between;
+}
+button {
+	font-size: 14px;
+	height: 44px;
+	white-space: nowrap;
+	outline: none;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	display:  flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px;
+	background: #099f09;
+	color: #fff;
+	width: 48%;
+	border: 2px solid transparent;
+	font-weight: 500;
+}
+button:hover {
+	background: #047304;
+}
+button.hide {
+	background: #fff;
+	border: 2px solid #099f09;
+	color: #099f09;
+}
+button.hide:hover {
+	border: 2px solid #047304;
+	color: #047304;
+}
+.koshochka-widget-colors {
+	width: 320px;
+}
+.koshochka-widget-colors-title {
+	font-size: 14px;
+	font-weight: 500;
+	color: #000;
+	display: block;
+	margin-bottom: 4px;
+}
+.koshochka-widget-colors-subtitle {
+	font-size: 12px;
+	color: hsl(0, 0%, 50%);
+	margin-bottom: 16px;
+	display: block;
+}
+.koshochka-widget-colors-list {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+}
+.koshochka-widget-colors-list .item {
+	width: 30px;
+	height: 30px;
+	border-radius: 6px;
+	border: 2px solid #fff;
+	margin-bottom: 4px;
+	margin-right: 3px;
+	cursor: pointer;
+}
+.koshochka-widget-colors-list .item.active {
+	outline: 2px solid #099f09;
+}
