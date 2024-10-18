@@ -14,9 +14,9 @@ chrome.storage.local.get(['showKoshochka', 'koshochkaColor'], function(result) {
 });
 
 chrome.storage.local.get(['selectedColor'], function(result) {
-    if (result.selectedColor) {
-        changeKoshochkaColor(result.selectedColor);
-    }
+     if (result.selectedColor) {
+          changeKoshochkaColor(result.selectedColor);
+     }
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -42,6 +42,16 @@ function changeKoshochkaColor(color) {
           root.style.setProperty('--base-koshochka-widget-color-s', selectedColorS);
      }
 }
+
+document.addEventListener('visibilitychange', function() {
+     if (document.visibilityState === 'visible') {
+          chrome.storage.local.get(['selectedColor'], function(result) {
+               if (result.selectedColor) {
+                    changeKoshochkaColor(result.selectedColor);
+               }
+          });
+     }
+});
 
 function hideTheKoshochka() {
      let existingKoshochka = document.querySelectorAll('.koshochka-widget-wrapper');
