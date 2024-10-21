@@ -13,10 +13,6 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
             chrome.scripting.executeScript({
                 target: { tabId: activeInfo.tabId },
                 files: ['content.js']
-            }, function() {
-                if (chrome.runtime.lastError) {
-                    console.error(`Error injecting script: ${chrome.runtime.lastError.message}`);
-                }
             });
         }
     });
