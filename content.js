@@ -51,9 +51,7 @@ document.addEventListener('visibilitychange', function() {
      if (document.visibilityState === 'visible') {
           chrome.storage.local.get(['selectedColor'], function(result) {
                if (result.selectedColor) {
-                    setTimeout(() => {
-                         changeKoshochkaColor(result.selectedColor);
-                    }, 500);
+                    changeKoshochkaColor(result.selectedColor);
                }
           });
      }
